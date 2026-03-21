@@ -2,6 +2,8 @@ package it.chiara.vinylshop.services.api;
 
 import it.chiara.vinylshop.dtos.OrdineDto;
 import it.chiara.vinylshop.dtos.OrdineItemDto;
+import it.chiara.vinylshop.dtos.VinileDto;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -9,6 +11,9 @@ public interface OrdineService {
 
     // ADMIN
     List<OrdineDto> getAllOrdini();
+
+    //Paginazione degli ordini
+    Page<OrdineDto> getOrdiniPaginati(int page, int size);
 
     // ADMIN (opzionale)
     List<OrdineDto> getOrdiniByUser(Long userId);

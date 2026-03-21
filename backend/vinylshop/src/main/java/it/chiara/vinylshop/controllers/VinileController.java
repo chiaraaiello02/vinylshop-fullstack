@@ -14,6 +14,7 @@ import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,16 @@ public class VinileController {
             throw new NotFoundException(errMsg);
         }
 
+        return new ResponseEntity<>(vinili, HttpStatus.OK);
+    }
+
+    //Paginazione del catalogo dei vinili
+    @GetMapping("/paginati")
+    public ResponseEntity<Page<VinileDto>> getViniliPaginati(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size) {
+
+        Page<VinileDto> vinili = vinileService.getViniliPaginati(page, size);
         return new ResponseEntity<>(vinili, HttpStatus.OK);
     }
 

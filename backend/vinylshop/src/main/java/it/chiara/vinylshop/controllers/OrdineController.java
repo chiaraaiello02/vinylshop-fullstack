@@ -3,6 +3,7 @@ package it.chiara.vinylshop.controllers;
 import it.chiara.vinylshop.dtos.OrdineDto;
 import it.chiara.vinylshop.dtos.OrdineItemDto;
 import it.chiara.vinylshop.services.api.OrdineService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,6 +36,15 @@ public class OrdineController {
     public ResponseEntity<List<OrdineDto>> getMyOrdini() {
         return ResponseEntity.ok(ordineService.getMyOrdini());
     }
+
+    @GetMapping("/admin/paginati")
+    public ResponseEntity<Page<OrdineDto>> getOrdiniPaginati(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+
+        return ResponseEntity.ok(ordineService.getOrdiniPaginati(page, size));
+    }
+
 
     // ADMIN: ordini di uno specifico user
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")

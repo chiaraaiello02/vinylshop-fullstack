@@ -8,6 +8,9 @@ import it.chiara.vinylshop.repository.*;
 import it.chiara.vinylshop.services.api.OrdineService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -202,6 +205,13 @@ public class OrdineServiceImpl implements OrdineService {
 
             return dto;
         }).toList();
+    }
+
+    public Page<OrdineDto> getOrdiniPaginati(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        return ordineRepository.findAll(pageable)
+                .map(this::toDto);
     }
 
     @Override

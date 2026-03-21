@@ -6,6 +6,9 @@ import it.chiara.vinylshop.repository.VinileRepository;
 import it.chiara.vinylshop.services.api.VinileService;
 import jakarta.persistence.OptimisticLockException;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -30,6 +33,13 @@ public class VinileServiceImpl implements VinileService {
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
+    @Override
+    public Page<VinileDto> getViniliPaginati(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return vinileRepository.findAll(pageable)
+                .map(this::convertToDto);
+    }
+
 
     @Override
     public Vinile selByCodVinile(String codVinile) {
