@@ -48,6 +48,25 @@ public class VinileServiceImpl implements VinileService {
     }
 
     @Override
+    public Page<VinileDto> searchVinili(String categoria, String q, int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        String categoriaPulita = (categoria == null || categoria.equalsIgnoreCase("Tutti"))
+                ? null
+                : categoria;
+
+        String qPulita = (q == null || q.trim().isEmpty())
+                ? null
+                : q.trim();
+
+        return vinileRepository.searchVinili(categoriaPulita, qPulita, pageable)
+                .map(this::convertToDto);
+    }
+
+
+
+    @Override
     public Vinile selByCodVinile(String codVinile) {
         return vinileRepository.findByCodVinile(codVinile).orElse(null);
     }
@@ -100,8 +119,12 @@ public class VinileServiceImpl implements VinileService {
         }
     }
 
+
     @Override
-    public void delVinile(Vinile vinile) {
+    public void delVinile(VinileDto vinileDto) {
+        Vinile vinile = vinileRepository.findByCodVinile(vinileDto.getCodVinile())
+                .orElseThrow(() -> new RuntimeException("Vinile non trovato"));
+
         vinileRepository.delete(vinile);
     }
 }

@@ -22,5 +22,8 @@ public interface VinileService {
 
     void saveVinile(VinileDto vinileDto);
 
-    void delVinile(Vinile vinile);
+
+    void delVinile(VinileDto vinileDto);
+
+    Page<VinileDto> searchVinili(String categoria, String q, int page, int size);
 }

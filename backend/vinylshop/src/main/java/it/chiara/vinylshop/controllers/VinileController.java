@@ -64,16 +64,10 @@ public class VinileController {
     public ResponseEntity<Page<VinileDto>> getViniliPaginati(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "8") int size,
-            @RequestParam(required = false) String categoria){
+            @RequestParam(required = false) String categoria,
+            @RequestParam(required = false) String q) {
 
-        Page<VinileDto> vinili;
-
-        if (categoria != null && !categoria.equalsIgnoreCase("Tutti")) {
-            vinili = vinileService.getViniliPaginatiPerCategoria(categoria, page, size);
-        } else {
-            vinili = vinileService.getViniliPaginati(page, size);
-        }
-
+        Page<VinileDto> vinili = vinileService.searchVinili(categoria, q, page, size);
         return ResponseEntity.ok(vinili);
     }
 
@@ -163,7 +157,8 @@ public class VinileController {
             throw new NotFoundException(msgErr);
         }
 
-        vinileService.delVinile(vinile);
+        VinileDto vinileDto = vinileService.convertToDto(vinile);
+        vinileService.delVinile(vinileDto);
 
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode responseNode = mapper.createObjectNode();
