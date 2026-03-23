@@ -12,6 +12,7 @@ public interface VinileService {
 
     Page<VinileDto> getViniliPaginati(int page, int size);
 
+    Page<VinileDto> getViniliPaginatiPerCategoria(String categoria, int page, int size);
 
     Vinile selByCodVinile(String codVinile);
 

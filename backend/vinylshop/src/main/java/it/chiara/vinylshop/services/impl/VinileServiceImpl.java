@@ -40,6 +40,12 @@ public class VinileServiceImpl implements VinileService {
                 .map(this::convertToDto);
     }
 
+    @Override
+    public Page<VinileDto> getViniliPaginatiPerCategoria(String categoria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return vinileRepository.findByCategoriaNome(categoria.trim(), pageable)
+                .map(this::convertToDto);
+    }
 
     @Override
     public Vinile selByCodVinile(String codVinile) {

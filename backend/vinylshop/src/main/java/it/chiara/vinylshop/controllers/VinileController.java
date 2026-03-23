@@ -63,10 +63,18 @@ public class VinileController {
     @GetMapping("/paginati")
     public ResponseEntity<Page<VinileDto>> getViniliPaginati(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "8") int size) {
+            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(required = false) String categoria){
 
-        Page<VinileDto> vinili = vinileService.getViniliPaginati(page, size);
-        return new ResponseEntity<>(vinili, HttpStatus.OK);
+        Page<VinileDto> vinili;
+
+        if (categoria != null && !categoria.equalsIgnoreCase("Tutti")) {
+            vinili = vinileService.getViniliPaginatiPerCategoria(categoria, page, size);
+        } else {
+            vinili = vinileService.getViniliPaginati(page, size);
+        }
+
+        return ResponseEntity.ok(vinili);
     }
 
     // GET /vinili/cerca/codice/{codVinile}
